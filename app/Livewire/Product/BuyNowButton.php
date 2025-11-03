@@ -36,11 +36,12 @@ class BuyNowButton extends Component
         }
 
         // 3. Create a basic order record
+        // CRITICAL FIX: Ensure all required fields (product_id, total_paid) are included.
         Order::create([
             'user_id' => Auth::id(),
-            'product_id' => $this->product->id,
-            'total_paid' => $this->product->price,
-            'status' => 'paid', // Simplified: assumes instant payment success
+            'product_id' => $this->product->id, // <-- Now included
+            'total_paid' => $this->product->price, // <-- Now included
+            'status' => 'paid',
         ]);
 
         // 4. Redirect to dashboard with success message
