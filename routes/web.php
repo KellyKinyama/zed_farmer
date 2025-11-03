@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Buyer\OrderHistory;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Seller\CreateProduct;
 use App\Livewire\Product\ProductList; // <--- Import the ProductList component
@@ -35,8 +36,16 @@ Route::middleware(['auth'])->group(function () {
     // Route for the seller to create a new product listing
     Route::get('/sell/product/create', CreateProduct::class)->name('product.create');
 
+    // Buyer Route - Order History
+    Route::get('/orders/history', OrderHistory::class)->name('orders.history'); // <-- NEW ROUTE
+
     // You can add more seller/dashboard routes here later
     Route::get('/dashboard', function () {
         return view('dashboard'); // Assuming you have a basic dashboard view
     })->name('dashboard');
+
+    // You can add more seller/dashboard routes here later
+    Route::get('/home', function () {
+        return view('dashboard'); // Assuming you have a basic dashboard view
+    })->name('home');
 });

@@ -3,7 +3,7 @@
         <div class="col-md-8">
             <div class="card shadow-lg border-0 rounded-4">
                 <div class="card-body p-4 p-md-5">
-                    <h1 class="card-title mb-4 fw-bold text-primary">👋 Welcome Back!</h1>
+                    <h1 class="card-title mb-4 fw-bold text-primary">👋 Welcome Back, {{ Auth::user()->name }}!</h1>
                     <p class="lead">You are logged into the ZedFarmer Dashboard.</p>
 
                     @if (session('order_success'))
@@ -14,15 +14,17 @@
                     @endif
 
                     <div class="mt-5">
-                        <h5 class="mb-3">What's next?</h5>
-                        <a href="{{ route('product.create') }}" class="btn btn-primary me-3 mb-2">
+                        <h5 class="mb-3">Quick Actions</h5>
+                        <a href="{{ route('orders.history') }}" class="btn btn-primary me-3 mb-2">
+                            <i class="fas fa-history me-1"></i> View My Orders
+                        </a>
+                        <a href="{{ route('product.create') }}" class="btn btn-success me-3 mb-2">
                             <i class="fas fa-plus me-1"></i> Create a New Listing
                         </a>
                         <a href="{{ route('product.index') }}" class="btn btn-outline-secondary mb-2">
                             <i class="fas fa-search me-1"></i> Browse Listings
                         </a>
                     </div>
-
                 </div>
             </div>
         </div>
