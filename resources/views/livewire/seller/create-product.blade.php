@@ -8,7 +8,7 @@
         @endif
 
         <form wire:submit.prevent="saveProduct" class="card shadow-lg p-4 p-md-5">
-            <h2 class="card-title text-2xl font-bold mb-4">Create New Listing</h2>
+            <h2 class="card-title fw-bold mb-4">Create New Listing</h2>
 
             <div class="mb-3">
                 <label for="title" class="form-label">Product Title</label>
@@ -22,10 +22,18 @@
                 @error('description') <div class="invalid-feedback">{{ $message }}</div> @enderror
             </div>
 
-            <div class="mb-3">
-                <label for="price" class="form-label">Price (USD)</label>
-                <input type="number" step="0.01" min="0.01" id="price" wire:model.blur="price" class="form-control @error('price') is-invalid @enderror">
-                @error('price') <div class="invalid-feedback">{{ $message }}</div> @enderror
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="price" class="form-label">Price (USD)</label>
+                    <input type="number" step="0.01" min="0.01" id="price" wire:model.blur="price" class="form-control @error('price') is-invalid @enderror">
+                    @error('price') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="quantity" class="form-label">Stock Quantity</label>
+                    <input type="number" min="1" id="quantity" wire:model.blur="quantity" class="form-control @error('quantity') is-invalid @enderror">
+                    @error('quantity') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                </div>
             </div>
 
             <div class="mb-4">

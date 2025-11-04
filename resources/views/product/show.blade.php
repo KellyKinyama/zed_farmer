@@ -1,51 +1,69 @@
 <x-layouts.app-layout>
     <div class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <div class="card shadow-lg rounded-4">
-                    <div class="card-body p-4 p-md-5">
-                        <div class="row">
-
-                            <!-- Product Image Display -->
-                            <div class="col-md-5 mb-4 mb-md-0">
-                                @php
-                                    // Check if the product has an image in the 'images' collection
-                                    $image = $product->getFirstMedia('images');
-                                @endphp
-
-                                @if ($image)
-                                    <img
-                                        src="{{ $image->getUrl() }}"
-                                        alt="{{ $product->title }}"
-                                        class="img-fluid rounded-3 shadow-sm border border-secondary"
-                                        style="object-fit: cover; max-height: 400px; width: 100%;"
-                                    >
-                                @else
-                                    <div class="d-flex align-items-center justify-content-center bg-light border rounded-3" style="height: 400px;">
-                                        <p class="text-muted mb-0">No Image Available</p>
-                                    </div>
-                                @endif
-                            </div>
-
-                            <!-- Product Details and Actions -->
-                            <div class="col-md-7">
-                                <h1 class="display-5 fw-bold mb-3">{{ $product->title }}</h1>
-
-                                <p class="text-success display-6 fw-bold mb-4">${{ number_format($product->price, 2) }}</p>
-
-                                <div class="mb-4">
-                                    <h5 class="fw-semibold">Description</h5>
-                                    <p class="text-muted whitespace-pre-wrap">{{ $product->description }}</p>
-                                </div>
-
-                                <p class="text-sm text-gray-500 mb-4">Listed by: <span class="fw-semibold">{{ $product->user->name }}</span></p>
-
-                                <!-- Buy Now Button Livewire Component -->
-                                @livewire('product.buy-now-button', ['product' => $product])
-                            </div>
+        <div class="row">
+            <!-- Left Column: Image -->
+            <div class="col-md-5 mb-4 mb-md-0">
+                @php
+                    $image = $product->getFirstMedia('images');
+                @endphp
+                <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                    @if ($image)
+                        <img
+                            src="{{ $image->getUrl() }}"
+                            class="img-fluid w-100"
+                            alt="{{ $product->title }}"
+                            style="object-fit: cover; max-height: 450px;"
+                        >
+                    @else
+                        <div class="d-flex align-items-center justify-content-center bg-light border-bottom p-5" style="min-height: 450px;">
+                            <p class="text-muted mb-0 small">No Image Available</p>
                         </div>
-                    </div>
+                    @endif
                 </div>
+            </div>
+
+            <!-- Right Column: Details and Buy Button -->
+            <div class="col-md-7">
+                <h1 class="display-5 fw-bold">{{ $product->title }}</h1>
+                <p class="lead text-success fw-bold my-3">${{ number_format($product->price, 2) }}</p>
+
+                <hr>
+
+                <!-- Stock Display -->
+                <div class="mb-3">
+                    <span class="fw-bold">Status: </span>
+                    @if ($product->quantity > 0)
+                        <span class="badge bg-success fs-6">In Stock ({{ $product->quantity }} available)</span>
+                    @else
+                        <span class="badge bg-danger fs-6">Out of Stock</span>
+                    @endif
+                </div>
+
+                <div class="mb-4">
+                    <span class="fw-bold">Description</span>
+                    <p>{{ $product->description }}</p>
+                </div>
+
+                <p class="small text-muted mb-4">
+                    Listed by: <span class="fw-semibold">{{ $product->user->name }}</span>
+                </p>
+
+                <!-- Buy Button/Login Prompt -->
+                @guest
+                    <a href="{{ route('login') }}" class="btn btn-primary btn-lg rounded-pill shadow-sm">
+                        Login to Buy
+                    </a>
+                @else
+                    <div class="d-flex align-items-center">
+                        <!-- The BuyNowButton Livewire component -->
+                        @livewire('product.buy-now-button', ['product' => $product], key($product->id))
+
+                        <!-- Seller Action: Delete Button -->
+                        @if (Auth::id() === $product->user_id)
+                            @livewire('seller.delete-product', ['product' => $product], key('delete-'.$product->id))
+                        @endif
+                    </div>
+                @endguest
             </div>
         </div>
     </div>

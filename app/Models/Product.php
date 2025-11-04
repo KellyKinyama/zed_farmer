@@ -16,6 +16,7 @@ class Product extends Model implements HasMedia // <-- NEW
         'title',
         'description',
         'price',
+        'quantity'
     ];
 
     public function user()
